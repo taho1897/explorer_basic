@@ -1,43 +1,68 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * //ArrayList import
  * //List import
  * */
 
 /*   자식들을 가지는 부모 요소들의 구현   */
-	//태그를 저장할 변수를 선언
-	//자식들의 목록을 저장할 변수 선언
+public class Composite implements Component {
+	String tag;//태그를 저장할 변수를 선언
+	List<Component> value = new ArrayList<Component>();//자식들의 목록을 저장할 변수 선언
 	
-	//태그를 초기화하는 생성자
-	//인터페이스의 add 메소드 구현
-	//자식 목록에 요소 추가
+	public Composite(String tag) {//태그를 초기화하는 생성자
+		this.tag = tag;
+	}
 	
-	//인터페이스의 remove 메소드 구현
-	//자식 목록에서 요소 제거
+	@Override
+	public void add(Component component) throws UnsupportedOperationException {//인터페이스의 add 메소드 구현
+		value.add(component);// 자식 목록에 요소 추가
+	}
 	
-	//인자를 이용해 i번째 자식 가져오기
-	//자식목록의 크기가 받은 인자값보다 큰지 확인
-	//i번째 자식을 받아 return
-	//작다면 null return
+	@Override
+	public void remove(Component component) throws UnsupportedOperationException {//인터페이스의 remove 메소드 구현
+		value.remove(component);//자식 목록에서 요소 제거
+	}
 	
-	//tag getter
-	//태그 값 리턴
+	@Override
+	public Component getChild(int i) {//인자를 이용해 i번째 자식 가져오기
+		if(value.size() > i) {//자식목록의 크기가 받은 인자값보다 큰지 확인
+			return value.get(i);//i번째 자식을 받아 return
+		}
+		else {
+			return null;//작다면 null return
+		}
+	}
 	
-	//value getter
-	//값을 저장할 변수 선언
-	//자식 요소 갯수 만큼 반복
-	//요소 객체에 j번째 자식요소를 저장
-	//해당 자식요소의 태그와 값을 누적
-	
-	//최종 누적 값을 리턴
-	
-	//선택한 요소가 파일일 때 출력
-	//태그와 값을 출력
-	
-	//선택한 요소가 디렉토리일 때 출력
-	//인자로 받은 값 만큼 반복
-	//공백 출력
-	//디렉토리 표시와 태그 출력
-	//자식 요소들의 갯수만큼 반복
-	//현재 자식 요소를 가져옴 
-	//j.형태의 숫자 출력
-	//마지막 요소 출력
+	@Override
+	public void print() {//선택한 요소가 파일일 때 출력
+		System.out.println(getTag() + getValue());//태그와 값을 출력
+	}
+	@Override
+	public void print(int i) {//선택한 요소가 디렉토리일 때 출력
+		for(int j = 0 ; j < i ; j++) {//인자로 받은 값 만큼 반복
+			System.out.print("   ");//공백 출력
+			System.out.print("D: " + getTag());//디렉토리 표시와 태그 출력
+		}
+		for(int k = 0 ; k < value.size() ; k++) {//자식 요소들의 갯수만큼 반복
+			Component component = getChild(k);//현재 자식 요소를 가져옴 
+			System.out.print(k + 1 + ". ");//j.형태의 숫자 출력
+			System.out.println(component.getValue());//마지막 요소 출력
+		}
+	}
+
+	public String getTag() {//tag getter
+		return tag;//태그 값 리턴
+	}
+
+	public String getValue() {//value getter
+		Component component;//값을 저장할 변수 선언
+		String text ="";
+		for(int j = 0 ; j < this.value.size() ; j++) {//자식 요소 갯수 만큼 반복
+			component = value.get(j);//요소 객체에 j번째 자식요소를 저장
+			text += component.getTag() + component.getValue();//해당 자식요소의 태그와 값을 누적
+		}
+		return text;//최종 누적 값을 리턴
+	}
+}
