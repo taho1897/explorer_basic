@@ -25,13 +25,16 @@ public class Explorer {
 				int length = fileList.length;//리스트의 크기를 저장할 변수 선언
 				
 				for( int i = 0 ; i < length ; i++) {//리스트 크기만큼 반복
+					//System.out.println(fileList[i].toString());
 					if(fileList[i].isDirectory()) {//현재 리스트의 요소가 디렉토리인지 확인
+						//System.out.println(fileList[i].toString());
 						Component directory = new Composite(fileList[i].toString());//해당 디렉토리를 요소 객체를 생성하여 저장
 						root.add(directory);//디렉토리 루트 객체에 현재 접근중인 하위 디렉토리 추가
 						makeTree(directory);//현재 접근중인 디렉토리로 트리 생성
 					}
 					else if (fileList[i].isFile()) {//현재 리스트의 요소가 파일인지 확인
-						Component leaf = new Leaf(fileList[i].getAbsolutePath(), fileList[i].toString());//해당 파일의 이름을 통해 leaf 객체를 생성
+						//System.out.println(fileList[i].getName());
+						Component leaf = new Leaf("F: ", fileList[i].getName());//해당 파일의 이름을 통해 leaf 객체를 생성
 						root.add(leaf);//디렉토리 루트에 해당 leaf객체 추가
 						
 					}
@@ -50,14 +53,16 @@ public class Explorer {
 			File[] listFiles = file.listFiles();//파일 배열 객체에 해당 요소의 파일 목록을 저장
 			int length = listFiles.length;//파일 목록 리스트의 길이 저장
 			for(int i = 0 ; i < length ; i++) {//파일 목록 리스트의 길이만큼 반복
-				Component component = new Composite(listFiles.toString());//현재 접근한 요소를 저장
+				Component component = root.getChild(i);//현재 접근한 요소를 저장
 				if(component.getTag().equals("F: ")) {//현재 접근한 요소의 태그가 F: , 즉 파일인지 확인
-					System.out.print(i + 1 + component.getTag() + root.getValue());//번호, 태그, 값을 출력
+					//System.out.println("oho");
+					System.out.println(i + 1 + " " + component.getTag() + component.getValue());//번호, 태그, 값을 출력
 				}
 				else {//파일이 아니라면(디렉토리라면)
 					String route = component.getTag();//현재 접근한 요소의 태그 저장
+					//System.out.println(route);
 					int criteria = route.lastIndexOf("\\");//\\, 즉 디렉토리 구분자의 마지막 인덱스를 저장
-					System.out.println(i + 1 + "D: " + route.substring(criteria + 1));//번호, 디렉토리 태그(직접 입력), 구분자의 마지막 인덱스 다음까지 스트링에서 잘라내서 출력
+					System.out.println(i + 1 + " D: " + route.substring(criteria + 1));//번호, 디렉토리 태그(직접 입력), 구분자의 마지막 인덱스 다음까지 스트링에서 잘라내서 출력
 				}
 			}
 			
