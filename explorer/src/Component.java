@@ -2,7 +2,7 @@
 public interface Component {
 	public void add(Component component) throws UnsupportedOperationException;// 요소를 받아 요소 더하기(자식 생성)
 	public void remove(Component component) throws UnsupportedOperationException;// 요소를 받아 요소 빼기(자식 제거)
-	public Component getChild(int i);// i번째 자식요소 받기
+	public Component getChild(int i) throws UnsupportedOperationException;// i번째 자식요소 받기
 /* 2017.06.30
  * //	public String getTag();// tag getter
  * //	public String getValue();// value getter

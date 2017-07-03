@@ -10,7 +10,7 @@ import java.io.InputStreamReader;//import InputStreamReader
 
 /*   탐색기 메인 클래스   */
 public class Explorer {
-	public static void main(String args[]) throws UnsupportedOperationException, NumberFormatException, IOException {//메인 메소드. IO, 숫자 포맷, 지원하지 않는 작업 관련 Exception 처리
+	public static void main(String[] args) throws UnsupportedOperationException, NumberFormatException, IOException {//메인 메소드. IO, 숫자 포맷, 지원하지 않는 작업 관련 Exception 처리
 		File file = new File("d:/");//탐색기 실행 루트 디렉토리를 파일 객체에 담음
 		Component root = new Composite(file.getAbsolutePath());//루트 디렉토리의 절대경로를 루트 요소에 저장
 		makeTree(root);//루트요소에서 시작하는 트리 생성 메소드 호출
@@ -20,18 +20,18 @@ public class Explorer {
 	private static Component makeTree(Component root) throws UnsupportedOperationException { 
 		File file = new File(root.getTag());// 디렉토리 루트의 태그를 이용하여 파일객체 생성
 		// System.out.println(dirRoot.getTag());
-		File[] fileList;// 파일들을 담을 배열 생성
-		fileList = file.listFiles();// 디렉토리 루트 파일 객체의 파일리스트 저장
-		if (file.listFiles() != null) {// 리스트가 null이 아닌지 확인(디렉토리인지 확인)
-			int length = fileList.length;// 리스트의 크기를 저장할 변수 선언
-
-			for (int i = 0; i < length; i++) {// 리스트 크기만큼 반복
+		
+		File[] fileList = file.listFiles();// 파일들을 담을 배열 생성 및 디렉토리 루트 파일 객체의 파일리스트 저장
+		//fileList = file.listFiles();// 디렉토리 루트 파일 객체의 파일리스트 저장, 중복 단계 제거
+		if (fileList != null) {// 리스트가 null이 아닌지 확인(디렉토리인지 확인)
+			// int length = fileList.length;// 리스트의 크기를 저장할 변수 선언
+			for (int i = 0; i < fileList.length; i++) {// 리스트 크기만큼 반복
 				// System.out.println(fileList[i].toString());
 				if (fileList[i].isDirectory()) {// 현재 리스트의 요소가 디렉토리인지 확인
 					// System.out.println(fileList[i].toString());
 					Component directory = new Composite(fileList[i].toString());// 해당 디렉토리를 요소 객체를 생성하여 저장
 					root.add(directory);// 디렉토리 루트 객체에 현재 접근중인 하위 디렉토리 추가
-					makeTree(directory);// 현재 접근중인 디렉토리로 트리 생성
+					directory = makeTree(directory);// 현재 접근중인 디렉토리로 트리 생성
 				} else if (fileList[i].isFile()) {// 현재 리스트의 요소가 파일인지 확인
 					// System.out.println(fileList[i].getName());
 					Component leaf = new Leaf("F: ", fileList[i].getName());// 해당 파일의 이름을 통해 leaf 객체를 생성
